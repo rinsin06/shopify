@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      >
+
+<head th:replace = "fragments :: html_head"></head>
+
+<body>
+
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <div class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
+        <div class="d-flex align-items-center justify-content-center w-100">
+            <div class="row justify-content-center w-100">
+                <div class="col-md-8 col-lg-6 col-xxl-3">
+                    <div class="card mb-0">
+                        <div class="card-body">
+                            <a href="./index.html" class="text-nowrap logo-img text-center d-block py-3 w-100">
+                                <img th:src="@{images/logo.png}" width="180" alt="">
+                            </a>
+                            <p class="text-center">OTP Verification</p>
+                            <form action="/verify-otp" method="get">
+                                <div class="mb-3">
+                                 
+                                    <input type="hidden" name="phone_number" th:value="${phone_number}" />
+                                    <label for="otp" class="form-label">Enter OTP:</label>
+                                    <input type="text" class="form-control" id="otp" name="otp" placeholder="Enter OTP" aria-describedby="textHelp" required />
+                                </div>
+                                <input type="submit" value="Verify OTP" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">
+                            </form>
+                            <div th:if="${verificationFailed}" class="alert alert-danger">
+                                OTP verification failed. Please try again.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{assetsAdmin/libs/jquery/dist/jquery.min.js}"></script>
+<script th:src="@{assetsAdmin/libs/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>

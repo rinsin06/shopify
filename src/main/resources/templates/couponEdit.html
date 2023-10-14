@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace = "fragments :: html_head">
+
+<body>
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <!-- Sidebar Start -->
+    <div th:replace = "fragments :: admin_sidebar"></div>
+    <!--  Sidebar End -->
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+        <!--  Header Start -->
+        <header th:replace = "fragments :: admin_MainNav"></header>
+        <!--  Header End -->
+        <div class="container-fluid">
+            <!--        top banner -->
+            <div class="card bg-light-info shadow-none position-relative overflow-hidden ">
+                <div class="card-body px-4 py-3">
+                    <div class="row align-items-center">
+                        <div class="col-9">
+                            <h4 class="fw-semibold mb-8">Coupon Management</h4>
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item">
+                                        <a class="text-muted " href="./index.html">Dashboard</a>
+                                    </li>
+                                    <li class="breadcrumb-item" aria-current="page">Coupon Management</li>
+                                </ol>
+                            </nav>
+                        </div>
+                        <div class="col-3">
+                            <div class="text-center mb-n5">
+                                <img src="" th:src="@{/assetsAdmin/images/banner/ChatBc.png}" alt="" class="img-fluid mb-n4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--        top banner end-->
+
+            <!--        Add Category Starts         -->
+
+            <div class="container-fluid">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title fw-semibold mb-4">Edit Coupon</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <form th:action="@{/admin/coupons/edit/{id}(id=${coupon.id})}" th:object="${coupon}" method="post">
+                                    <div class="mb-3">
+                                        <label for="code">Code</label>
+                                        <input type="text" class="form-control" required th:field="*{code}" name="code" id="code"  placeholder="Enter name">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="discount">Discount (%)</label>
+                                        <input type="number" class="form-control" required th:field="*{discountPercentage}" name="discount" id="discount"  placeholder="Enter name">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="startDate">Start Date</label>
+                                        <input type="date" id="startDate" th:field="*{startDate}" class="form-control" required  name="startDate" placeholder="Price">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="endDate">End Date</label>
+                                        <input type="date" id="endDate" th:field="*{endDate}" class="form-control" required  name="startDate" placeholder="Price">
+                                    </div>
+
+                                    <!--                                    <div class="mb-3">-->
+                                    <!--                                        <label for="description">Coupon Description</label>-->
+                                    <!--                                        <textarea class="form-control" rows="5" th:field="*{description}" name="description" id="description"></textarea>-->
+                                    <!--                                    </div>-->
+
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </form>
+                                <br>
+                                <a class="btn btn-success" th:href="@{/admin/coupons}">Back to List</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--        Add Coupon End        -->
+
+            <div class="py-6 px-6 text-center">
+                <footer th:replace = "fragments :: footer"></footer>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

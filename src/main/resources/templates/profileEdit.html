@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace = "fragments :: html_head">
+
+<body>
+
+<!--Header Starts-->
+<div th:replace = "fragments :: user_header"></div>
+<!--Header Ends-->
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title fw-semibold mb-4">Edit Profile</h5>
+            <div class="card">
+                <div class="card-body">
+                    <form th:action="@{/editprofile}" th:object="${user}" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="firstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" name="firstName" id="firstName" required th:field="*{firstName}" placeholder="First Name" aria-describedby="textHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="lastName" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" name="lastName" id="lastName" required th:field="*{lastName}" placeholder="Last Name" aria-describedby="textHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" th:field="*{email}" placeholder="Email" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="lastName" class="form-label">Mobile Number</label>
+                            <input type="number" class="form-control" name="lastName" id="mobile" required th:field="*{phoneNumber}" placeholder="Mobile Number" aria-describedby="textHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="profileImage">Profile Image</label>
+                            <input type="hidden" name="imgName" value="current_image_filename.jpg">
+                            <input type="file" name="profileImage" id="profileImage">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="py-6 px-6 text-center">
+    <footer th:replace = "fragments :: footer"></footer>
+</div>
+</body>
+
+</html>

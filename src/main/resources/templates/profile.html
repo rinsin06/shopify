@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Modernize Free</title>
+    <link rel="shortcut icon" type="image/png" th:href="@{/assetsAdmin/images/logos/favicon.png}" />
+    <link rel="stylesheet" th:href="@{/assetsAdmin/css/styles.min.css}" />
+</head>
+
+<body>
+
+<div class="body-wrapper">
+    <!--Header Starts-->
+    <div th:replace = "fragments :: user_header"></div>
+    <!--Header Ends-->
+    <div class="container-fluid">
+        <div class="card bg-light-info shadow-none position-relative overflow-hidden">
+            <div class="card-body px-4 py-6">
+                <div class="row align-items-center">
+                    <div class="col-9">
+                        <h4 class="fw-semibold mb-8">Your Profile</h4>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a class="text-muted text-decoration-none" href="./index.html">Account Settings</a></li>
+                                <li class="breadcrumb-item" aria-current="page">Your Profile</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="col-3">
+                        <div class="text-center mb-n5">
+                            <img src="../../dist/images/breadcrumb/ChatBc.png" alt="" class="img-fluid mb-n4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <ul class="nav nav-pills user-profile-tab" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent text-black fs-3 py-4 active" id="pills-account-tab" data-bs-toggle="pill" data-bs-target="#pills-account" type="button" role="tab" aria-controls="pills-account" aria-selected="true">
+                        <i class="ti ti-user-circle me-2 fs-6"></i>
+                        <span class="d-none d-md-block">Account</span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent text-black fs-3 py-4" id="pills-notifications-tab" data-bs-toggle="pill" data-bs-target="#pills-notifications" type="button" role="tab" aria-controls="pills-notifications" aria-selected="false" tabindex="-1">
+                        <i class="ti ti-bell me-2 fs-6"></i>
+                        <span class="d-none d-md-block">Addresses</span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent text-black fs-3 py-4" id="pills-bills-tab" data-bs-toggle="pill" data-bs-target="#pills-bills" type="button" role="tab" aria-controls="pills-bills" aria-selected="false" tabindex="-1">
+                        <i class="ti ti-article me-2 fs-6"></i>
+                        <span class="d-none d-md-block">Bills</span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent text-black fs-3 py-4" id="pills-security-tab" data-bs-toggle="pill" data-bs-target="#pills-security" type="button" role="tab" aria-controls="pills-security" aria-selected="false" tabindex="-1">
+                        <i class="ti ti-lock me-2 fs-6"></i>
+                        <span class="d-none d-md-block">Security</span>
+                    </button>
+                </li>
+            </ul>
+            <div class="card-body">
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade active show" id="pills-account" role="tabpanel" aria-labelledby="pills-account-tab" tabindex="0">
+                        <div class="row">
+                            <div class="col-lg-6 d-flex align-items-stretch">
+                                <div class="card w-100 position-relative overflow-hidden">
+                                    <div class="card-body p-4">
+                                        <div class="position-relative overflow-hidden">
+                                            <div class="position-relative">
+                                                <div class="chat-box p-9" style="height: calc(100vh - 428px)" data-simplebar="init"><div class="simplebar-wrapper" style="margin: -20px;"><div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;"><div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden;"><div class="simplebar-content" style="padding: 20px;">
+                                                    <div class="chat-list chat active-chat" data-user-id="1">
+                                                        <div class="hstack align-items-start mb-7 pb-1 align-items-center justify-content-between">
+                                                            <div class="d-flex align-items-center gap-3">
+                                                                <img th:if="${user.profileImageName}" th:src="@{/profileImages/{imageName}(imageName=${user.profileImageName})}" alt="Profile Image" width="72" height="72" class="rounded-circle">
+                                                                <div>
+                                                                    <h6 class="fw-semibold fs-4 mb-0" th:text="${user.firstName + ' ' + user.lastName}">Dr. Bonnie Barstow </h6>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-4 mb-7">
+                                                                <p class="mb-1 fs-2">Phone number</p>
+                                                                <h6 class="fw-semibold mb-0" th:text="${user.phoneNumber}">+1 (203) 3458</h6>
+                                                            </div>
+                                                            <div class="col-8 mb-7">
+                                                                <p class="mb-1 fs-2">Email address</p>
+                                                                <h6 class="fw-semibold mb-0" th:text="${user.email}" >alexandra@modernize.com</h6>
+                                                            </div>
+                                                            <div class="col-12 mb-9">
+                                                                <p class="mb-1 fs-2">Address</p>
+                                                                <h6 class="fw-semibold mb-0">312, Imperical Arc, New western corner</h6>
+                                                            </div>
+                                                            <div class="col-4 mb-7">
+                                                                <p class="mb-1 fs-2">City</p>
+                                                                <h6 class="fw-semibold mb-0">New York</h6>
+                                                            </div>
+                                                            <div class="col-8 mb-7">
+                                                                <p class="mb-1 fs-2">Country</p>
+                                                                <h6 class="fw-semibold mb-0">United Stats</h6>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-items-center gap-2">
+                                                            <a th:href="@{/editprofile}"><button class="btn btn-primary fs-2" >Edit</button></a>
+                                                        </div>
+                                                    </div>
+                                                </div></div></div></div><div class="simplebar-placeholder" style="width: auto; height: 578px;"></div></div><div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div><div class="simplebar-track simplebar-vertical" style="visibility: hidden;"><div class="simplebar-scrollbar" style="height: 0px; transform: translate3d(0px, 0px, 0px); display: none;"></div></div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 d-flex align-items-stretch">
+                                <div class="card w-100 position-relative overflow-hidden">
+                                    <div class="card-body p-4">
+                                        <h5 class="card-title fw-semibold">Change Profile</h5>
+                                        <p class="card-subtitle mb-4">Change your profile picture from here</p>
+                                        <div class="text-center">
+                                            <img th:if="${user.profileImageName}" th:src="@{/profileImages/{imageName}(imageName=${user.profileImageName})}" alt="Profile Image" class="img-fluid rounded-circle" width="120" height="120">
+                                            <div class="d-flex align-items-center justify-content-center my-4 gap-3">
+                                                <a th:href="@{/editprofile}"><button class="btn btn-primary">Edit</button></a>
+                                                <button class="btn btn-outline-danger">Reset</button>
+                                            </div>
+                                            <p class="mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 d-flex align-items-stretch">
+                                <div class="card w-100 position-relative overflow-hidden">
+                                    <div class="card-body p-4">
+                                        <h5 class="card-title fw-semibold">Change Password</h5>
+                                        <p class="card-subtitle mb-4">To change your password please confirm here</p>
+                                        <form th:action="@{/change-password}" method="post">
+                                            <div class="mb-4">
+                                                <label for="currentPassword" class="form-label fw-semibold">Current Password</label>
+                                                <input type="password" class="form-control" id="currentPassword" value="12345678910" name="currentPassword" required>
+                                            </div>
+                                            <div class="mb-4">
+                                                <label for="newPassword" class="form-label fw-semibold">New Password</label>
+                                                <input type="password" class="form-control" id="newPassword" value="12345678910" name="newPassword" required>
+                                            </div>
+                                            <div class="mb-4">
+                                                <label for="confirmPassword" class="form-label fw-semibold">Confirm Password</label>
+                                                <input type="password" class="form-control" id="confirmPassword" value="12345678910" name="confirmPassword" required>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Change Password</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="card w-100 position-relative overflow-hidden mb-0">
+                                    <div class="card-body p-4">
+                                        <h5 class="card-title fw-semibold">Personal Details</h5>
+                                        <p class="card-subtitle mb-4">To change your personal detail , edit and save from here</p>
+                                        <form>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="mb-4">
+                                                        <label for="exampleInputtext" class="form-label fw-semibold">Your Name</label>
+                                                        <input type="text" class="form-control" id="exampleInputtext" placeholder="Mathew Anderson">
+                                                    </div>
+                                                    <div class="mb-4">
+                                                        <label  class="form-label fw-semibold">Location</label>
+                                                        <select class="form-select" aria-label="Default select example">
+                                                            <option selected="">United Kingdom</option>
+                                                            <option value="1">United States</option>
+                                                            <option value="2">United Kingdom</option>
+                                                            <option value="3">India</option>
+                                                            <option value="3">Russia</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb-4">
+                                                        <label for="exampleInputPassword1" class="form-label fw-semibold">Email</label>
+                                                        <input type="email" class="form-control" id="exampleInputtext" placeholder="info@modernize.com">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="mb-4">
+                                                        <label for="exampleInputPassword1" class="form-label fw-semibold">Store Name</label>
+                                                        <input type="text" class="form-control" id="exampleInputtext" placeholder="Maxima Studio">
+                                                    </div>
+                                                    <div class="mb-4">
+                                                        <label for="exampleInputPassword1" class="form-label fw-semibold">Currency</label>
+                                                        <select class="form-select" aria-label="Default select example">
+                                                            <option selected="">India (INR)</option>
+                                                            <option value="1">US Dollar ($)</option>
+                                                            <option value="2">United Kingdom (Pound)</option>
+                                                            <option value="3">India (INR)</option>
+                                                            <option value="3">Russia (Ruble)</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb-4">
+                                                        <label for="exampleInputPassword1" class="form-label fw-semibold">Phone</label>
+                                                        <input type="text" class="form-control" id="exampleInputtext" placeholder="+91 12345 65478">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="">
+                                                        <label for="exampleInputPassword1" class="form-label fw-semibold">Address</label>
+                                                        <input type="text" class="form-control" id="exampleInputtext" placeholder="814 Howard Street, 120065, India">
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="d-flex align-items-center justify-content-end mt-4 gap-3">
+                                                        <button class="btn btn-primary">Save</button>
+                                                        <button class="btn btn-light-danger text-danger">Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="pills-notifications" role="tabpanel" aria-labelledby="pills-notifications-tab" tabindex="0">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-9">
+                                <div class="card">
+                                    <div class="card-body p-4">
+                                        <h4 class="fw-semibold mb-3">Address Settings</h4>
+
+                                        <div class="d-flex align-items-center gap-2">
+                                            <a th:href="@{/add-address}"><button class="btn btn-primary fs-2" >Add New Address</button></a>
+                                        </div>
+                                        <br>
+
+                                        <div class="d-flex align-items-center gap-2">
+                                            <a th:href="@{/addresses}"><button class="btn btn-primary fs-2" >View All Addresses</button></a>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-12">
+                                <div class="d-flex align-items-center justify-content-end gap-3">
+                                    <button class="btn btn-primary">Save</button>
+                                    <button class="btn btn-light-danger text-danger">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="pills-bills" role="tabpanel" aria-labelledby="pills-bills-tab" tabindex="0">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-9">
+                                <div class="card">
+                                    <div class="card-body p-4">
+                                        <h4 class="fw-semibold mb-3">Billing Information</h4>
+                                        <form>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="mb-4">
+                                                        <label for="exampleInputPassword1" class="form-label fw-semibold">Business Name*</label>
+                                                        <input type="text" class="form-control" id="exampleInputtext" placeholder="Visitor Analytics">
+                                                    </div>
+                                                    <div class="mb-4">
+                                                        <label for="exampleInputPassword1" class="form-label fw-semibold">Business Address*</label>
+                                                        <input type="text" class="form-control" id="exampleInputtext" placeholder="">
+                                                    </div>
+                                                    <div class="">
+                                                        <label for="exampleInputPassword1" class="form-label fw-semibold">First Name*</label>
+                                                        <input type="text" class="form-control" id="exampleInputtext" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="mb-4">
+                                                        <label for="exampleInputPassword1" class="form-label fw-semibold">Business Sector*</label>
+                                                        <input type="text" class="form-control" id="exampleInputtext" placeholder="Arts, Media &amp; Entertainment">
+                                                    </div>
+                                                    <div class="mb-4">
+                                                        <label for="exampleInputPassword1" class="form-label fw-semibold">Country*</label>
+                                                        <input type="text" class="form-control" id="exampleInputtext" placeholder="Romania">
+                                                    </div>
+                                                    <div class="">
+                                                        <label for="exampleInputPassword1" class="form-label fw-semibold">Last Name*</label>
+                                                        <input type="text" class="form-control" id="exampleInputtext" placeholder="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-9">
+                                <div class="card">
+                                    <div class="card-body p-4">
+                                        <h4 class="fw-semibold mb-3">Current Plan : <span class="text-success">Executive</span></h4>
+                                        <p>Thanks for being a premium member and supporting our development.</p>
+                                        <div class="d-flex align-items-center justify-content-between mt-7 mb-3">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <div class="bg-light rounded-1 p-6 d-flex align-items-center justify-content-center">
+                                                    <i class="ti ti-package text-dark d-block fs-7" width="22" height="22"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="mb-0">Current Plan</p>
+                                                    <h5 class="fs-4 fw-semibold">750.000 Monthly Visits</h5>
+                                                </div>
+                                            </div>
+                                            <a class="text-dark fs-6 d-flex align-items-center justify-content-center bg-transparent p-2 fs-4 rounded-circle" href="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add">
+                                                <i class="ti ti-circle-plus"></i>
+                                            </a>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-3">
+                                            <button class="btn btn-primary">Change Plan</button>
+                                            <button class="btn btn-outline-danger">Reset Plan</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-9">
+                                <div class="card">
+                                    <div class="card-body p-4">
+                                        <h4 class="fw-semibold mb-3">Payment Method</h4>
+                                        <p>On 26 December, 2023</p>
+                                        <div class="d-flex align-items-center justify-content-between mt-7">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <div class="bg-light rounded-1 p-6 d-flex align-items-center justify-content-center">
+                                                    <i class="ti ti-credit-card text-dark d-block fs-7" width="22" height="22"></i>
+                                                </div>
+                                                <div>
+                                                    <h5 class="fs-4 fw-semibold">Visa</h5>
+                                                    <p class="mb-0 text-dark">*****2102</p>
+                                                </div>
+                                            </div>
+                                            <a class="text-dark fs-6 d-flex align-items-center justify-content-center bg-transparent p-2 fs-4 rounded-circle" href="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Edit">
+                                                <i class="ti ti-pencil-minus"></i>
+                                            </a>
+                                        </div>
+                                        <p class="my-2">If you updated your payment method, it will only be dislpayed here after your next billing cycle.</p>
+                                        <div class="d-flex align-items-center gap-3">
+                                            <button class="btn btn-outline-danger">Cancel Subscription</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex align-items-center justify-content-end gap-3">
+                                    <button class="btn btn-primary">Save</button>
+                                    <button class="btn btn-light-danger text-danger">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="pills-security" role="tabpanel" aria-labelledby="pills-security-tab" tabindex="0">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="card">
+                                    <div class="card-body p-4">
+                                        <h4 class="fw-semibold mb-3">Two-factor Authentication</h4>
+                                        <div class="d-flex align-items-center justify-content-between pb-7">
+                                            <p class="mb-0">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis sapiente sunt earum officiis laboriosam ut.</p>
+                                            <button class="btn btn-primary">Enable</button>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-between py-3 border-top">
+                                            <div>
+                                                <h5 class="fs-4 fw-semibold mb-0">Authentication App</h5>
+                                                <p class="mb-0">Google auth app</p>
+                                            </div>
+                                            <button class="btn btn-light-primary text-primary">Setup</button>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-between py-3 border-top">
+                                            <div>
+                                                <h5 class="fs-4 fw-semibold mb-0">Another e-mail</h5>
+                                                <p class="mb-0">E-mail to send verification link</p>
+                                            </div>
+                                            <button class="btn btn-light-primary text-primary">Setup</button>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-between py-3 border-top">
+                                            <div>
+                                                <h5 class="fs-4 fw-semibold mb-0">SMS Recovery</h5>
+                                                <p class="mb-0">Your phone number or something</p>
+                                            </div>
+                                            <button class="btn btn-light-primary text-primary">Setup</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="card">
+                                    <div class="card-body p-4">
+                                        <div class="bg-light rounded-1 p-6 d-inline-flex align-items-center justify-content-center mb-3">
+                                            <i class="ti ti-device-laptop text-primary d-block fs-7" width="22" height="22"></i>
+                                        </div>
+                                        <h5 class="fs-5 fw-semibold mb-0">Devices</h5>
+                                        <p class="mb-3">Lorem ipsum dolor sit amet consectetur adipisicing elit Rem.</p>
+                                        <button class="btn btn-primary mb-4">Sign out from all devices</button>
+                                        <div class="d-flex align-items-center justify-content-between py-3 border-bottom">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <i class="ti ti-device-mobile text-dark d-block fs-7" width="26" height="26"></i>
+                                                <div>
+                                                    <h5 class="fs-4 fw-semibold mb-0">iPhone 14</h5>
+                                                    <p class="mb-0">London UK, Oct 23 at 1:15 AM</p>
+                                                </div>
+                                            </div>
+                                            <a class="text-dark fs-6 d-flex align-items-center justify-content-center bg-transparent p-2 fs-4 rounded-circle" href="javascript:void(0)">
+                                                <i class="ti ti-dots-vertical"></i>
+                                            </a>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-between py-3">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <i class="ti ti-device-laptop text-dark d-block fs-7" width="26" height="26"></i>
+                                                <div>
+                                                    <h5 class="fs-4 fw-semibold mb-0">Macbook Air</h5>
+                                                    <p class="mb-0">Gujarat India, Oct 24 at 3:15 AM</p>
+                                                </div>
+                                            </div>
+                                            <a class="text-dark fs-6 d-flex align-items-center justify-content-center bg-transparent p-2 fs-4 rounded-circle" href="javascript:void(0)">
+                                                <i class="ti ti-dots-vertical"></i>
+                                            </a>
+                                        </div>
+                                        <button class="btn btn-light-primary text-primary w-100 py-1">Need Help ?</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex align-items-center justify-content-end gap-3">
+                                    <button class="btn btn-primary">Save</button>
+                                    <button class="btn btn-light-danger text-danger">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+<script th:src="@{/assetsAdmin/libs/jquery/dist/jquery.min.js}"></script>
+<script th:src="@{/assetsAdmin/libs/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assetsAdmin/js/sidebarmenu.js}"></script>
+<script th:src="@{/assetsAdmin/js/app.min.js}"></script>
+<script th:src="@{/assetsAdmin/libs/apexcharts/dist/apexcharts.min.js}"></script>
+<script th:src="@{/assetsAdmin/libs/simplebar/dist/simplebar.js}"></script>
+<script th:src="@{/assetsAdmin/js/dashboard.js}"></script>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - codingnepalweb.com -->
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>OTP Verification Form</title>
+   <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" href="css/verify.css" type="text/css" media ="all" />
+    
+    <!-- Boxicons CSS -->
+    
+   <script src="js/verify.js" defer></script>
+  </head>
+  <body>
+  
+    <div th:if="${not verificationSuccess}" class="alert alert-danger">
+  	 Invalid OTP. Please try again.
+	</div>
+    <div class="container">
+      <header>
+        <i class="bx bxs-check-shield"></i>
+      </header>
+      <h4>Enter OTP Code</h4>
+      <form th:action="@{/verify-otp}" method="post">
+        <div class="input-field">
+         <input type="hidden" name="email" th:value="${email}" />
+     <input type="hidden" name="phone_number" th:value="${phone_number}" />
+        <input placeholder="Enter OTP" th:name="otp"  type="text" required="required">
+        </div>
+        <button>Verify OTP</button>
+      </form>
+    </div>
+  </body>
+</html>

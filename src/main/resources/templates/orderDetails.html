@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace = "fragments :: html_head"></head>
+<body>
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <!-- Sidebar Start -->
+    <div th:replace = "fragments :: admin_sidebar"></div>
+    <!--  Sidebar End -->
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+        <!--  Header Start -->
+        <header th:replace = "fragments :: admin_MainNav"></header>
+        <!--  Header End -->
+        <div class="container-fluid">
+
+<!--        top banner -->
+<div class="card bg-light-info shadow-none position-relative overflow-hidden ">
+    <div class="card-body px-4 py-3">
+        <div class="row align-items-center">
+            <div class="col-9">
+                <h4 class="fw-semibold mb-8">Order Details</h4>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a class="text-muted " href="./index.html">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item" aria-current="page">Order Details</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="col-3">
+                <div class="text-center mb-n5">
+                    <img src="" th:src="@{/assetsAdmin/images/banner/ChatBc.png}" alt="" class="img-fluid mb-n4">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-8">
+    <div class="card">
+        <div class="card-body p-4">
+            <h4 class="fw-semibold mb-3">Order ID</h4>
+            <div class="d-flex align-items-center justify-content-between pb-7">
+                <p th:text="${order.id}" class="mb-0">#123456</p>
+            </div>
+            <div class="d-flex align-items-center justify-content-between py-3 border-top">
+                <div>
+                    <h5 class="fs-4 fw-semibold mb-0">Order Date & Time</h5>
+                    <p th:text="${order.formattedOrderDate}" class="mb-0">date</p>
+                    <p th:text="${order.formattedOrderTime}" class="mb-0">time</p>
+                </div>
+
+            </div>
+            <div class="d-flex align-items-center justify-content-between py-3 border-top">
+                <div>
+                    <h5 class="fs-4 fw-semibold mb-0">Total Amount</h5>
+                    <p th:text="${order.totalAmount}" class="mb-0">amount</p>
+                </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-between py-3 border-top">
+                <div>
+                    <h5 class="fs-4 fw-semibold mb-0">Payment Method</h5>
+                    <p th:text="${order.paymentMethod}" class="mb-0">payment method</p>
+                </div>
+            </div>
+            <ul>
+                <div class="card">
+                    <div class="card-body p-4">
+                        <h5 class="fs-4 fw-semibold mb-0">Products</h5><br/>
+                        <li th:each="item : ${order.orderItems}">
+                            <p>
+                                Product Name: <span th:text="${item.product.name}"></span><br/>
+                                Qty: <span th:text="${item.quantity}"></span><br/><hr/>
+                            </p>
+                            
+                            <h5 class="fs-4 fw-semibold mb-0">Current Status</h5><br/>
+                            
+                            <p th:if="${order.status == 'CANCELED'}" class="text-danger" th:text="${order.status}"></p>
+                            
+                             <p th:if="${order.status == 'RETURN'}" class="text-primary" th:text="${order.status}"></p>
+                             
+                             <p th:unless="${order.status == 'RETURN' || order.status == 'CANCELED' }" class="text-success" th:text="${order.status}"></p>
+                            
+                        </li>
+                    </div>
+                </div>
+            </ul>
+            <!-- Display existing status updates -->
+            <ul>
+                <div class="card">
+                    <div class="card-body p-4">
+                        <h5 class="fs-4 fw-semibold mb-0">Status History</h5><br/>
+                        <li th:each="statusUpdate : ${order.statusUpdates}">
+                            <p>
+        <!--                        Original Status: <span th:text="${statusUpdate.originalStatus}"></span><br />-->
+                                Status: <span class="text-success" th:text="${statusUpdate.updatedStatus}"></span><br />
+                                Place Reached: <span th:text="${statusUpdate.placeReached}"></span><br />
+                                Date and Time: <span th:text="${#temporals.format(statusUpdate.updateDateTime, 'yyyy-MM-dd HH:mm:ss')}"></span><hr/>
+                            </p>
+                        </li>
+                    </div>
+                </div>
+            </ul>
+
+
+
+            <form th:if="${order.status != T(com.shopify.util.OrderStatus).CANCELED and order.status != T(com.shopify.util.OrderStatus).RETURN}" th:action="@{/admin/orders/update-status}" method="post">
+                <input type="hidden" name="orderId" th:value="${order.id}" />
+                <div class="form-group">
+                    <label for="newStatus">New Status</label>
+                    <select class="form-control" name="newStatus" id="newStatus">
+                        <option th:each="status : ${T(com.shopify.util.OrderStatus).values()}"
+                                th:value="${status}"
+                                th:text="${status}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="placeReached">Place Reached</label>
+                    <input type="text" class="form-control" name="placeReached" id="placeReached" required />
+                </div>
+                <button type="submit" class="btn btn-primary">Update Status</button>
+            </form>
+
+
+            <!--            <table>-->
+<!--                <tbody>-->
+<!--                <tr th:each="order, iStat : ${orders}">-->
+<!--                    <td colspan="7"> &lt;!&ndash; Use appropriate colspan value &ndash;&gt;-->
+<!--                        <table class="table table-bordered">-->
+<!--                            <thead>-->
+<!--                            <tr>-->
+<!--                                <th>Product Name</th>-->
+<!--                                <th>Quantity</th>-->
+<!--                                &lt;!&ndash; ... (other columns if needed) &ndash;&gt;-->
+<!--                            </tr>-->
+<!--                            </thead>-->
+<!--                            <tbody>-->
+<!--                            &lt;!&ndash; Loop through order items of the current order &ndash;&gt;-->
+<!--                            <tr th:each="item : ${order.orderItems}">-->
+<!--                                <td th:text="${item.product.name}"></td>-->
+<!--                                <td th:text="${item.quantity}"></td>-->
+<!--                                &lt;!&ndash; ... (other columns if needed) &ndash;&gt;-->
+<!--                            </tr>-->
+<!--                            </tbody>-->
+<!--                        </table>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--                </tbody>-->
+<!--            </table>-->
+        </div>
+    </div>
+</div>
+
+<a class="btn btn-primary" th:href="@{/admin/orders}">Back to Orders</a>
+
+        </div>
+    </div>
+</div>
+
+<div class="py-6 px-6 text-center">
+    <footer th:replace = "fragments :: footer"></footer>
+</div>
+</body>
+</html>

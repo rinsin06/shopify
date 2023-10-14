@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace = "fragments :: html_head">
+
+<body>
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <!-- Sidebar Start -->
+    <div th:replace = "fragments :: admin_sidebar"></div>
+    <!--  Sidebar End -->
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+        <!--  Header Start -->
+        <header th:replace = "fragments :: admin_MainNav"></header>
+        <!--  Header End -->
+<div class="container-fluid">
+<!--        top banner -->
+        <div class="card bg-light-info shadow-none position-relative overflow-hidden ">
+            <div class="card-body px-4 py-3">
+                <div class="row align-items-center">
+                    <div class="col-9">
+                        <h4 class="fw-semibold mb-8">User Management</h4>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a class="text-muted " href="./index.html">Dashboard</a>
+                                </li>
+                                <li class="breadcrumb-item" aria-current="page">User Management</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="col-3">
+                        <div class="text-center mb-n5">
+                            <img src="" th:src="@{/assetsAdmin/images/banner/ChatBc.png}" alt="" class="img-fluid mb-n4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!--        top banner end-->
+
+<!--        Users Table Starts         -->
+
+<div class="search">
+				
+				<label for="search_box"><span  aria-hidden="true"></span></label>
+				<div class="search_form">
+					<form th:action="@{/admin/searchusers}" method = "get" >
+						<input style="border-color: aqua " type="text" class="btn btn-"  name="keyword" th:value="${keyword}" placeholder="Search...">
+						<input  class="btn btn-danger" type="submit" value="Search">
+					</form>
+				</div>
+
+        <div class="table-responsive rounded-2 mb-4 ">
+            <table class="table border text-nowrap customize-table mb-0 align-middle">
+                <thead class="text-dark fs-4">
+                <tr>
+                    <th><h6 class="fs-4 fw-semibold mb-0">SN</h6></th>
+                    <th><h6 class="fs-4 fw-semibold mb-0">First Name</h6></th>
+                    <th><h6 class="fs-4 fw-semibold mb-0">Phone Number</h6></th>
+                    <th><h6 class="fs-4 fw-semibold mb-0">Email</h6></th>
+                    <th><h6 class="fs-4 fw-semibold mb-0">Status</h6></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user, iStat : ${users}">
+                    <th scope="row" th:text="${iStat.index + 1}">1</th>
+                    <td th:text="${user.firstName}"></td>
+                    <td th:text="${user.phoneNumber}"></td>
+                    <td th:text="${user.email}"><p class="mb-0 fw-normal">email.com</p></td>
+                    <td th:text="${user.blocked ? 'Blocked' : 'Active'}">
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" th:if="${user.blocked}" data-toggle="modal" th:data-target="'#unblockModal-' + ${user.id}" >Unblock</button>
+                          <a th:unless ="${user.blocked}" th:onclick="'javascript:block(' + ${user.id} + ')'" class="btn btn-danger">Block</a>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+             <div th:if="${totalPages > 1}">
+				<div class="row col-sm-10">
+					<div class="fs-4 fw-semibold mb-0">Total Rows: [[${totalItems}]]</div>
+					<div class="col-sm-2">
+						<span th:each="i: ${#numbers.sequence(1, totalPages)}"> <a
+							th:if="${currentPage != i}" th:href="@{'/admin/users/page/' + ${i}}">[[${i}]]</a>
+							<span  th:unless="${currentPage != i}">[[${i}]]</span> &nbsp;
+							&nbsp;
+						</span>
+					</div>
+					<div class="col-sm-1">
+						<a th:if="${currentPage < totalPages}"
+							th:href="@{'/admin/users/page/' + ${currentPage + 1}}">Next</a> <span
+							th:unless="${currentPage < totalPages}">Next</span>
+					</div>
+
+				</div>
+			</div>
+        </div>
+</div>
+
+        <!-- Block Confirmation Modals -->
+        <div th:each="user : ${user}">
+            <div class="modal fade" th:id="'blockModal-' + ${user.id}" tabindex="-1" role="dialog" aria-labelledby="blockModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="blockModalLabel">Confirm Block User</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to block this user?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <a th:onclick="'javascript:block(' + ${user.id} + ')'" class="btn btn-danger">Block</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Unblock Confirmation Modals -->
+        <div th:each="user : ${users}">
+            <div class="modal fade" th:id="'unblockModal-' + ${user.id}" tabindex="-1" role="dialog" aria-labelledby="unblockModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="unblockModalLabel">Confirm Unblock User</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to unblock this user?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <a th:onclick="'javascript:unblock(' + ${user.id} + ')'" class="btn btn-danger">Unblock</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--        Users Table End        -->
+
+        <div class="py-6 px-6 text-center">
+            <footer th:replace = "fragments :: footer"></footer>
+        </div>
+        </div>
+    </div>
+
+<script th:inline="javascript">
+    function block(userId) {
+        fetch('/admin/block/' + userId, {
+            method: 'POST'
+        }).then(function(response) {
+            if (response.ok) {
+                location.reload();
+            }
+        });
+    }
+
+    function unblock(userId) {
+        fetch('/admin/unblock/' + userId, {
+            method: 'POST'
+        }).then(function(response) {
+            if (response.ok) {
+                location.reload();
+            }
+        });
+    }
+</script>
+</body>
+
+</html>

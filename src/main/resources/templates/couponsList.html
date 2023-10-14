@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace = "fragments :: html_head">
+
+<body>
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <!-- Sidebar Start -->
+    <div th:replace = "fragments :: admin_sidebar"></div>
+    <!--  Sidebar End -->
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+        <!--  Header Start -->
+        <header th:replace = "fragments :: admin_MainNav"></header>
+        <!--  Header End -->
+        <div class="container-fluid">
+            <!--        top banner -->
+            <div class="card bg-light-info shadow-none position-relative overflow-hidden ">
+                <div class="card-body px-4 py-3">
+                    <div class="row align-items-center">
+                        <div class="col-9">
+                            <h4 class="fw-semibold mb-8">Coupon Management</h4>
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item">
+                                        <a class="text-muted " href="./index.html">Dashboard</a>
+                                    </li>
+                                    <li class="breadcrumb-item" aria-current="page">Coupon Management</li>
+                                </ol>
+                            </nav>
+                        </div>
+                        <div class="col-3">
+                            <div class="text-center mb-n5">
+                                <img src="" th:src="@{/assetsAdmin/images/banner/ChatBc.png}" alt="" class="img-fluid mb-n4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--        top banner end-->
+            <a th:href="@{/admin/coupons/add}" style="margin: 20px 0" class="btn btn-primary">Add Coupons</a>
+
+            <!--        Categories Table Starts         -->
+
+            <div class="table-responsive rounded-2 mb-4 ">
+                <table class="table border text-nowrap customize-table mb-0 align-middle">
+                    <thead class="text-dark fs-4">
+                    <tr>
+                        <th><h6 class="fs-4 fw-semibold mb-0">SN</h6></th>
+                        <th><h6 class="fs-4 fw-semibold mb-0">Code</h6></th>
+                        <th><h6 class="fs-4 fw-semibold mb-0">Discount</h6></th>
+                        <th><h6 class="fs-4 fw-semibold mb-0">Start Date</h6></th>
+                        <th><h6 class="fs-4 fw-semibold mb-0">End Date</h6></th>
+                        <th><h6 class="fs-4 fw-semibold mb-0">Actions</h6></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="coupon, iStat : ${coupons}">
+                        <th scope="row" th:text="${iStat.index + 1}">1</th>
+                        <td th:text="${coupon.code}">Coupon code</td>
+                        <td th:text="${coupon.discountPercentage}"></td>
+                        <td th:text="${coupon.startDate}"></td>
+                        <td th:text="${coupon.endDate}"></td>
+
+
+                        <td><a href="" th:href="@{/admin/coupons/edit/{id}(id=${coupon.id})}" class="btn btn-warning">Edit</a></td>
+                        <td><button class="btn btn-danger" data-toggle="modal" th:data-target="'#deleteModal-' + ${coupon.id}">Delete</button></td>
+
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Delete Confirmation Modals -->
+        <div th:each="coupon : ${coupons}">
+            <div class="modal fade" th:id="'deleteModal-' + ${coupon.id}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete this Coupon?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <a th:href="@{/admin/coupons/delete/{id}(id=${coupon.id})}" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--        Categories Table End        -->
+
+        <div class="py-6 px-6 text-center">
+            <footer th:replace = "fragments :: footer"></footer>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

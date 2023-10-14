@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace = "fragments :: html_head"></head>
+
+<body>
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <div
+            class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
+        <div class="d-flex align-items-center justify-content-center w-100">
+            <div class="row justify-content-center w-100">
+                <div class="col-md-8 col-lg-6 col-xxl-3">
+                    <div class="card mb-0">
+                        <div class="card-body">
+                            <a th:href="@{/}" class="text-nowrap logo-img text-center d-block py-3 w-100">
+                                <img th:src="@{images/logo.png}" width="180" alt="">
+                            </a>
+                            <p class="text-center">Endless Experience</p>
+                               <div th:if="${loginSuccess}" class="alert alert-success text-center" role="alert">
+        Login successful! Welcome.
+    </div>
+                            <form th:action="@{/login}" method="post">
+                                <div th:if="${param.error}" class="alert alert-danger" role="alert">
+                                    Invalid username or password.
+                                </div>
+                                <div th:if="${param.logout}" class="alert text-success" role="alert">
+                                    Logout successfully
+                                </div>
+                              
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email address</label>
+                                    <input type="email" name="email" id="email" placeholder="Your Email" class="form-control" aria-describedby="emailHelp">
+                                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" placeholder="Password" name="password" id="password">
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button type="submit" value="Login" class="btn btn-primary btn-block">Submit</button>
+                                </div>
+                                <br>
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <p class="fs-4 mb-0 fw-bold">Don't have an Account? </p>
+                                    <a class="text-primary fw-bold ms-2" href="./register.html" th:href="@{/register}">Register here</a>
+                                </div>
+                                <br>
+                                <div class="text-center">
+                                    <a href="" th:href="@{/forgotpassword}">Forgot password?</a>
+                                </div>
+                                <div class="text-center mt-3">
+                                    <h3>OR</h3>
+                                    <a href="/oauth2/authorization/google" class="btn btn-primary">Sign-In with Google</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{assetsAdmin/libs/jquery/dist/jquery.min.js}"></script>
+<script th:src="@{assetsAdmin/libs/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace = "fragments :: html_head">
+
+<body>
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <!-- Sidebar Start -->
+    <div th:replace = "fragments :: admin_sidebar"></div>
+    <!--  Sidebar End -->
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+        <!--  Header Start -->
+        <header th:replace = "fragments :: admin_MainNav"></header>
+        <!--  Header End -->
+        <div class="container-fluid">
+            <!--        top banner -->
+            <div class="card bg-light-info shadow-none position-relative overflow-hidden ">
+                <div class="card-body px-4 py-3">
+                    <div class="row align-items-center">
+                        <div class="col-9">
+                            <h4 class="fw-semibold mb-8">Category Management</h4>
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item">
+                                        <a class="text-muted " href="./index.html">Dashboard</a>
+                                    </li>
+                                    <li class="breadcrumb-item" aria-current="page">Category Management</li>
+                                </ol>
+                            </nav>
+                        </div>
+                        <div class="col-3">
+                            <div class="text-center mb-n5">
+                                <img src="" th:src="@{/assetsAdmin/images/banner/ChatBc.png}" alt="" class="img-fluid mb-n4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--        top banner end-->
+
+            <!--        Add Category Starts         -->
+
+            <div class="container-fluid">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title fw-semibold mb-4">Add a new category</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <form th:action="@{/admin/categories/add}" method="post" th:object="${category}">
+                                    <input type="hidden" name="id"  th:field="*{id}">
+                                    <div class="mb-3">
+                                        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></span>
+                                        <span th:if="${error}" th:text="${error}" class="error text-danger"></span>
+                                        <br>
+                                        <label for="name">Name</label>
+                                        <input type="text" class="form-control" required th:field="*{name}" name="name" id="name"  placeholder="Enter name">
+                                        <div id="emailHelp" class="form-text">You are adding a new category in shop.</div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        <!--        Add category End        -->
+
+            <div class="py-6 px-6 text-center">
+                <footer th:replace = "fragments :: footer"></footer>
+            </div>
+    </div>
+</div>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace = "fragments :: html_head">
+    <!-- Add your head content here -->
+</head>
+<body>
+<!-- Add your navigation and other elements here -->
+ <div th:replace = "fragments :: user_header"></div>
+ 
+<div class="container mt-4">
+    <div class="card-body p-4 pb-0">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="fs-5 fw-semibold mb-0">Your Wishlist</h5>
+        </div>
+        <div class="row row-cols-1 row-cols-md-4 d-flex justify-content-evenly gap-3">
+            <!-- Start of item loop -->
+            <th:block th:each="item : ${wishlistItems}">
+                <div class="col-md-3">
+                    <div class="card" style="height: 100%;">
+                       <a th:href="@{/shop/viewproduct/{id}(id=${item.product.id})}">
+                            <div style="height: 350px; overflow: hidden;">
+                                <img th:src="${'/productImages/' + item.product.images[0].imageName}" alt="Product Image" class="card-img-top rounded-0" style="object-fit: cover; width: 100%; height: 100%;" />
+                            </div>
+                        </a>
+                        <div class="card-body">
+                            <span class="font-weight-bold" th:text="${item.product.name}"></span>
+                            <form th:action="@{/wishlist/remove}" method="post">
+                                <input type="hidden" name="wishlistItemId" th:value="${item.id}" />
+                                <button class="btn btn-warning" type="submit">Remove</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+            <!-- End of item loop -->
+        </div>
+    </div>
+</div>
+
+
+<!-- Add your footer and other elements here -->
+</body>
+</html>

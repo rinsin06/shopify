@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace = "fragments :: html_head"></head>
+<body>
+<!--Header Starts-->
+ <h1>Order Tracking Page</h1>
+
+    <!-- Loop through the list of orders and display their statuses -->
+    <div th:each="order : ${orders}">
+        <div class="order-status">
+            <!-- Display the order status icon dynamically -->
+         
+            
+            <!-- Display the order status and location -->
+            <p>Status: <span th:text="${order.status}"></span></p>
+            <p>Location: <span th:text="${order.location}"></span></p>
+        </div>
+    </div>
+
+<div class="py-6 px-6 text-center">
+  
+</div>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace = "fragments :: html_head"></head>
+
+<body>
+
+<div th:replace = "fragments :: user_header"></div>
+
+<h1>Your Orders</h1>
+
+<div class="card position-relative overflow-hidden">
+        <div class="card-body p-4 pb-0" th:each="order, iStat : ${orders}">
+
+            <div class="card">
+                <div class="nav nav-pills p-3 mb-3 rounded card flex-row grid gap-3 bg-primary p-2 text-dark bg-opacity-10">
+                    <div class="p-2 g-col-4">
+                        <h5 class="fs-2 fw-medium mb-0 ">Order Placed</h5>
+                        <p th:text="${order.formattedOrderDate}" class="mb-0 fs-1">date</p>
+                        <p th:text="${order.formattedOrderTime}" class="mb-0 fs-1">time</p>
+                    </div>
+                    <div class="p-2 g-col-4">
+                        <h5 class="fs-2 fw-medium mb-0">Total</h5>
+                        <p th:text="${order.totalAmount}" class="mb-0 fs-1">total amount</p>
+                    </div>
+                    <div class="p-2 g-col-4 position-absolute end-0">
+                        <h5 class="fs-2 fw-medium mb-0">Order ID: <span th:text="${order.id}" class="mb-0 fw-semibold fs-2">order id</span></h5>
+                        <a th:href="@{/orders/details/{orderId}(orderId=${order.id})}">View Details</a>
+                        <span> | </span>
+                        <a th:href="@{/orders/invoice/{orderId}(orderId=${order.id})}" th:onclick="'openInvoice(' + ${order.id} + ')'">Invoice</a>
+
+                    </div>
+                </div>
+                <div class="card-body p-4 bg-primary p-2 text-dark bg-opacity-10">
+                    <ul>
+                        <div class="card">
+                            <div class="card-body p-4">
+                                <h5 class="fs-4 fw-semibold mb-0">Products</h5><br/>
+                                <li th:each="item : ${order.orderItems}">
+                                    <p>
+                                        Product Name: <span th:text="${item.product.name}"></span><br/>
+                                        Qty: <span th:text="${item.quantity}"></span><br/><hr/>
+                                    </p>
+                                </li>
+                            </div>
+                                                       <a th:if="${order.status != T(com.shopify.util.OrderStatus).CANCELED and order.status != T(com.shopify.util.OrderStatus).DELIVERED and order.status != T(com.shopify.util.OrderStatus).RETURN}" data-toggle="modal" th:data-target="'#cancelModal-' + ${order.id}" class="btn btn-danger btn-sm">Cancel Order</a>
+                            <a th:if="${order.status != T(com.shopify.util.OrderStatus).SHIPPED and order.status != T(com.shopify.util.OrderStatus).PENDING and order.status != T(com.shopify.util.OrderStatus).CANCELED and order.status != T(com.shopify.util.OrderStatus).RETURN}" data-toggle="modal" th:data-target="'#returnModal-' + ${order.id}" class="btn btn-info btn-sm">Return Order</a>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+            <hr/>
+
+    </div>
+</div>
+
+<!-- Cancel Order Confirmation Modals -->
+<div th:each="order : ${orders}">
+    <div class="modal fade" th:id="'cancelModal-' + ${order.id}" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cancelModalLabel">Confirm Cancellation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to cancel this order?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Exit</button>
+                    <a th:href="@{/cancelOrder/{orderId}(orderId=${order.id})}" class="btn btn-danger">Cancel Order</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Return Order Confirmation Modals -->
+<div th:each="order : ${orders}">
+    <div class="modal fade" th:id="'returnModal-' + ${order.id}" tabindex="-1" role="dialog" aria-labelledby="returnModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="returnModalLabel">Confirm Return</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to return this order?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Exit</button>
+                    <a th:href="@{/returnOrder/{orderId}(orderId=${order.id})}" class="btn btn-danger">Return Order</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="py-6 px-6 text-center">
+    <footer th:replace = "fragments :: footer"></footer>
+</div>
+
+<script>
+    function openInvoice(orderId) {
+        window.open('/orders/invoice/' + orderId, '_blank');
+    }
+</script>
+
+</body>
+</html>

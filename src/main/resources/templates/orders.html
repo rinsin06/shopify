@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace = "fragments :: html_head">
+
+<body>
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <!-- Sidebar Start -->
+    <div th:replace = "fragments :: admin_sidebar"></div>
+    <!--  Sidebar End -->
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+        <!--  Header Start -->
+        <header th:replace = "fragments :: admin_MainNav"></header>
+        <!--  Header End -->
+        <div class="container-fluid">
+            <!--        top banner -->
+            <div class="card bg-light-info shadow-none position-relative overflow-hidden ">
+                <div class="card-body px-4 py-3">
+                    <div class="row align-items-center">
+                        <div class="col-9">
+                            <h4 class="fw-semibold mb-8">Order Management</h4>
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item">
+                                        <a class="text-muted " href="./index.html">Dashboard</a>
+                                    </li>
+                                    <li class="breadcrumb-item" aria-current="page">Order Management</li>
+                                </ol>
+                            </nav>
+                        </div>
+                        <div class="col-3">
+                            <div class="text-center mb-n5">
+                                <img src="" th:src="@{/assetsAdmin/images/banner/ChatBc.png}" alt="" class="img-fluid mb-n4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--        top banner end-->
+
+            <!--        Categories Table Starts         -->
+
+            <div class="table-responsive rounded-2 mb-4 ">
+                <table class="table border text-nowrap customize-table mb-0 align-middle">
+                    <thead class="text-dark fs-4">
+                    <tr>
+                        <th><h6 class="fs-4 fw-semibold mb-0">Order ID</h6></th>
+                        <th><h6 class="fs-4 fw-semibold mb-0">Total Amount</h6></th>
+                        <th><h6 class="fs-4 fw-semibold mb-0">Payment Method</h6></th>
+                        <th><h6 class="fs-4 fw-semibold mb-0">User Order Status</h6></th>
+<!--                        <th><h6 class="fs-4 fw-semibold mb-0">Update Status</h6></th>-->
+                        <th><h6 class="fs-4 fw-semibold mb-0">View More Details</h6></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="order, iStat : ${orders}">
+                        <th scope="row" th:text="${iStat.index + 1}">1</th>
+                        <td th:text="${order.totalAmount}">Larry</td>
+                        <td th:text="${order.paymentMethod}"></td>
+                        <td class="text-success" th:text="${order.status}"></td>
+<!--                        <td>-->
+<!--                            <form th:action="@{/admin/orders/update-status}" method="post">-->
+<!--                                &lt;!&ndash;                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />&ndash;&gt;-->
+<!--                                <input type="hidden" th:name="orderId" th:value="${order.id}" />-->
+
+<!--                                <label for="status">Update Status:</label>-->
+<!--                                <select class="btn btn-info dropdown-toggle" id="status" name="status">-->
+<!--                                    <option value="PENDING">Pending</option>-->
+<!--                                    <option value="SHIPPED">Shipped</option>-->
+<!--                                    <option value="DELIVERED">Delivered</option>-->
+<!--                                    <option value="CANCELED" data-toggle="modal" data-target="#cancelModal">Canceled</option>-->
+<!--                                </select>-->
+
+<!--                                <button class="btn btn-primary" type="submit">Update Status</button>-->
+<!--                            </form>-->
+<!--                        </td>-->
+                        <td>
+                            <a th:href="@{/admin/orders/details/{orderId}(orderId=${order.id})}">View Details</a>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="cancelModalLabel">Cancel Order Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to cancel this order?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button id="cancelOrderButton" type="button" class="btn btn-danger">Cancel Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--        Categories Table End        -->
+
+        <div class="py-6 px-6 text-center">
+            <footer th:replace = "fragments :: footer"></footer>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const statusSelect = document.getElementById("status");
+        const cancelOrderButton = document.getElementById("cancelOrderButton");
+
+        statusSelect.addEventListener("change", function () {
+            if (statusSelect.value === "CANCELED") {
+                $("#cancelModal").modal("show");
+            }
+        });
+
+        cancelOrderButton.addEventListener("click", function () {
+            // Submit the form when the user confirms the cancellation
+            const form = statusSelect.closest("form");
+            form.submit();
+        });
+    });
+</script>
+
+
+</body>
+
+</html>

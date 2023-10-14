@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace = "fragments :: html_head"></head>
+<body>
+
+<!--Header Starts-->
+<div th:replace = "fragments :: user_header"></div>
+
+<div class="container-fluid">
+    <div class="card bg-light-info shadow-none position-relative overflow-hidden">
+        <div class="card-body px-4 py-6">
+            <div class="row align-items-center d-flex justify-content-center">
+<div class="col-lg-8">
+    <div class="card">
+        <div class="card-body p-4">
+            <h4 class="fw-semibold mb-3">Order Details</h4>
+            <div class="nav nav-pills p-3 mb-3 rounded card flex-row grid gap-3 bg-primary p-2 text-dark bg-opacity-10">
+                <div class="p-2 g-col-4">
+                <h5 class="fs-3 fw-medium mb-0">Order ID: <span th:text="${order.id}" class="mb-0 fw-semibold fs-2">order id</span></h5>
+                </div>
+                <div class="p-2 g-col-4">
+                    <h5 class="fs-3 fw-medium mb-0 ">Order Placed</h5>
+                    <p th:text="${order.formattedOrderDate}" class="mb-0 fs-2">date</p>
+                    <p th:text="${order.formattedOrderTime}" class="mb-0 fs-2">time</p>
+                </div>
+                <div class="p-2 g-col-4">
+                    <h5 class="fs-3 fw-medium mb-0">Total</h5>
+                    <p th:text="${order.totalAmount}" class="mb-0 fs-2">total amount</p>
+                </div>
+                <div class="p-2 g-col-4">
+                    <h5 class="fs-3 fw-medium mb-0">Payment Method</h5>
+                    <p th:text="${order.paymentMethod}" class="mb-0 fs-2">payment method</p>
+                </div>
+                <!-- Button to trigger the order tracking modal -->
+<button class="btn btn-primary" data-toggle="modal" data-target="#orderTrackingModal">
+    Track Your Order
+</button>
+
+<!-- Order Tracking Modal -->
+<div class="modal fade" id="orderTrackingModal" tabindex="-1" role="dialog" aria-labelledby="orderTrackingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderTrackingModalLabel">Order Tracking</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+    <!-- Conditionally display the progress bar based on the order status -->
+    <div th:if="${order.status == T(com.shopify.util.OrderStatus).PENDING 
+               or order.status == T(com.shopify.util.OrderStatus).SHIPPED 
+               or order.status == T(com.shopify.util.OrderStatus).DELIVERED}">
+        <!-- Order Tracking Progress Bar -->
+        <div class="progress">
+            <div  class="progress-bar progress-bar-striped" role="progressbar" th:style="'width: ' + ${progress} + '%'">
+   
+            </div>
+        </div>
+    </div>
+    
+    <!-- Order Tracking Icons and Status Updates -->
+   <div >
+        <div class="order-status">
+  
+
+<div style="display: flex; justify-content: space-between;">
+    <div>
+       <img th:src="@{/assetsAdmin/Icons/icons8-data-pending-48.png}" alt="Order Status" />
+        <p style="text-align: center;">Pending</p>
+    </div>
+    <div>
+        <img  th:src="@{/assetsAdmin/Icons/icons8-shipped-48.png}" alt="Order Status" />
+         <p style="text-align: center;">Shipped</p>
+    </div>
+    <div>
+       <img  th:src="@{/assetsAdmin/Icons/icons8-delivered-box-48.png}" alt="Order Status" />
+        <p style="text-align: center;">Delivered</p>
+    </div>
+</div>
+
+            
+            <!-- Display the order status and location -->
+          <div class="card">
+                    <div class="card-body p-4">
+                        <h5 class="fs-4 fw-semibold mb-0">Tracking History</h5><br/>
+                        <li th:each="statusUpdate : ${order.statusUpdates}">
+                            <p>
+        <!--                        Original Status: <span th:text="${statusUpdate.originalStatus}"></span><br />-->
+                                Status: <span class="text-success" th:text="${statusUpdate.updatedStatus}"></span><br />
+                                Place Reached: <span th:text="${statusUpdate.placeReached}"></span><br />
+                                Date and Time: <span th:text="${#temporals.format(statusUpdate.updateDateTime, 'yyyy-MM-dd HH:mm:ss')}"></span><hr/>
+                            </p>
+                        </li>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+    <!-- Add your JavaScript code here to update statuses dynamically -->
+    <script>
+        // Function to get the appropriate status icon URL based on the order status
+        function getStatusIcon(String status) {
+        	
+        	 //const status = orderStatus.toString(); 
+            // Implement logic to return the correct icon URL for each status
+            // For example, you can have a switch case or if-else statements here
+            switch (status) {
+            
+                case 'PENDING':
+                    return '/static/assetsAdmin/Icons/icons8-data-pending-48.png';
+                case 'Shipped':
+                    return '/path-to-shipped-icon.png';
+                case 'Delivered':
+                    return '/path-to-delivered-icon.png';
+                default:
+                    return '/path-to-default-icon.png';
+            }
+        }
+
+        // Add your logic to fetch orders from the backend and update the page
+        // You can use JavaScript fetch API or jQuery AJAX to make AJAX requests
+    </script>
+    
+    <!-- Order Status from the 'status' field in the order object -->
+    <div class="mb-3">
+        <p class="mb-0">Current Status:</p>
+        <span th:text="${order.status}" class="fw-bold"></span>
+        
+        
+    </div>
+</div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+                
+                <div class="p-2 g-col-4 position-absolute end-0">
+                    <a th:href="@{/orders/invoice/{orderId}(orderId=${order.id})}" th:onclick="'openInvoice(' + ${order.id} + ')'">Invoice</a>
+                </div>
+            </div>
+            <!-- Display existing status updates -->
+            <ul>
+                
+            </ul>
+            <ul>
+                <div class="card">
+                    <div class="card-body p-4">
+                            <div class="p-2 g-col-4">
+                                <h5 class="fs-3 fw-medium mb-0">Shipping Address</h5>
+                                <p th:utext="${#strings.replace(order.shippingAddressString, ',', '<br>')}" class="mb-0 fs-2">shipping address</p>
+                            </div>
+                    </div>
+                </div>
+            </ul>
+            <ul>
+                <div class="card">
+                    <div class="card-body p-4">
+                        <h5 class="fs-4 fw-semibold mb-0">Products</h5><br/>
+                        <li th:each="item : ${order.orderItems}">
+                            <p>
+                                Product Name: <span th:text="${item.product.name}"></span><br/>
+                                Qty: <span th:text="${item.quantity}"></span><br/><hr/>
+                            </p>
+                        </li>
+                    </div>
+                </div>
+            </ul>
+
+
+        </div>
+    </div>
+</div>
+    </div>
+</div>
+    </div>
+</div>
+
+<div class="py-6 px-6 text-center">
+    <footer th:replace = "fragments :: footer"></footer>
+</div>
+
+<script>
+    function openInvoice(orderId) {
+        window.open('/orders/invoice/' + orderId, '_blank');
+    }
+</script>
+
+</body>
+</html>

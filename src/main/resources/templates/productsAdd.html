@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace = "fragments :: html_head">
+
+<body>
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <!-- Sidebar Start -->
+    <div th:replace = "fragments :: admin_sidebar"></div>
+    <!--  Sidebar End -->
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+        <!--  Header Start -->
+        <header th:replace = "fragments :: admin_MainNav"></header>
+        <!--  Header End -->
+        <div class="container-fluid">
+            <!--        top banner -->
+            <div class="card bg-light-info shadow-none position-relative overflow-hidden ">
+                <div class="card-body px-4 py-3">
+                    <div class="row align-items-center">
+                        <div class="col-9">
+                            <h4 class="fw-semibold mb-8">Product Management</h4>
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item">
+                                        <a class="text-muted " href="./index.html">Dashboard</a>
+                                    </li>
+                                    <li class="breadcrumb-item" aria-current="page">Product Management</li>
+                                </ol>
+                            </nav>
+                        </div>
+                        <div class="col-3">
+                            <div class="text-center mb-n5">
+                                <img src="" th:src="@{/assetsAdmin/images/banner/ChatBc.png}" alt="" class="img-fluid mb-n4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--        top banner end-->
+
+            <!--        Add Product Starts         -->
+
+            <div class="container-fluid">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title fw-semibold mb-4">Add a new Product</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <form th:action="@{/admin/products/add}" method="post" th:object="${productDTO}" enctype="multipart/form-data">
+                                    <input type="hidden" name="id"  th:field="*{id}">
+                                    <div class="mb-3">
+                                        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></span>
+                                        <span th:if="${error}" th:text="${error}" class="error text-danger"></span>
+                                        <br>
+                                        <label for="name">Name</label>
+                                        <input type="text" class="form-control" required th:field="*{name}" name="name" id="name"  placeholder="Enter name">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="category">Category</label>
+                                        <select class="form-control" th:field="*{categoryId}" id="category" name="category">
+                                            <option th:each="category :${categories}"
+                                                    th:value="${category.id}"
+                                                    th:text="${category.name}">
+                                        </select>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" type="button" data-toggle="modal" data-target="#addCategoryModal">
+                                                Add Category
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="price">Price</label>
+                                        <input type="number" class="form-control" required th:field="*{price}" name="price" id="price"
+                                               placeholder="Price">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="stockQuantity">Stock Quantity:</label>
+                                        <input type="number" class="form-control" id="stockQuantity" th:field="*{stockQuantity}" required />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="weight">Weight in grams</label>
+                                        <input type="number" class="form-control" required th:field="*{weight}" name="weight" id="weight"
+                                               placeholder="Weight">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="description">Product Description</label>
+                                        <textarea class="form-control" rows="5" th:field="*{description}" name="description" id="description"></textarea>
+                                    </div>
+                                    <input type="text" name="imgNames" id="imgNames" hidden /> <!-- Add a hidden input field for imgNames -->
+
+                                    <div class="mb-3">
+                                        <p>Product Images</p>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" name="productImages" accept="image/jpeg, image/png" multiple id="productImages"/>
+                                            <label class="custom-file-label" for="productImages">Choose files</label>
+                                        </div>
+                                        <!-- Display image previews for each selected image -->
+                                        <div class="form-group">
+                                            <div class="row" id="imagePreviews">
+                                                <!-- Individual image previews will be displayed here -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Category Modal -->
+            <div class="modal fade" id="addCategoryModal" tabindex="-1" role="dialog" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addCategoryModalLabel">Add New Category</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Add Category Form -->
+                            <form th:action="@{/admin/categories/addproducts}" method="post" th:object="${newCategory}">
+                                <div class="form-group">
+                                    <label for="newCategoryName">Category Name</label>
+                                    <input type="text" class="form-control" id="newCategoryName" th:field="*{name}" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Add Category</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!--        Add Product End        -->
+
+            <div class="py-6 px-6 text-center">
+                <footer th:replace = "fragments :: footer"></footer>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function readURL(input) {
+        if (input.files && input.files.length) {
+            $('#imagePreviews').empty(); // Clear previous previews
+
+            for (var i = 0; i < input.files.length; i++) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#imagePreviews').append(
+                        '<div class="col-md-3">' +
+                        '<img src="' + e.target.result + '" width="100" height="100" class="img-thumbnail">' +
+                        '</div>'
+                    );
+                };
+                reader.readAsDataURL(input.files[i]);
+            }
+        }
+    }
+
+    $('#productImages').change(function () {
+        readURL(this);
+    });
+
+    $(".custom-file-input").on("change", function () {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace = "fragments :: html_head">
+
+<body>
+<!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <!-- Sidebar Start -->
+    <div th:replace = "fragments :: admin_sidebar"></div>
+    <!--  Sidebar End -->
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+        <!--  Header Start -->
+        <header th:replace = "fragments :: admin_MainNav"></header>
+        <!--  Header End -->
+        <div class="container-fluid">
+            <!--        top banner -->
+            <div class="card bg-light-info shadow-none position-relative overflow-hidden ">
+                <div class="card-body px-4 py-3">
+                    <div class="row align-items-center">
+                        <div class="col-9">
+                            <h4 class="fw-semibold mb-8">Product Management</h4>
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item">
+                                        <a class="text-muted " href="./index.html">Dashboard</a>
+                                    </li>
+                                    <li class="breadcrumb-item" aria-current="page">Product Management</li>
+                                </ol>
+                            </nav>
+                        </div>
+                        <div class="col-3">
+                            <div class="text-center mb-n5">
+                                <img src="" th:src="@{/assetsAdmin/images/banner/ChatBc.png}" alt="" class="img-fluid mb-n4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--        top banner end-->
+            <a th:href="@{/admin/products/add}" style="margin: 20px 0" class="btn btn-primary">Add Product</a>
+            
+            <div class="search">
+				
+				<label for="search_box"><span  aria-hidden="true"></span></label>
+				<div class="search_form">
+					<form th:action="@{/admin/searchproducts}" method = "get" >
+						<input style="border-color: aqua " type="text" class="btn btn-"  name="keyword" th:value="${keyword}" placeholder="Search...">
+						<input  class="btn btn-danger" type="submit" value="Search">
+					</form>
+				</div>
+
+            <!--        Categories Table Starts         -->
+
+            <div class="table-responsive rounded-2 mb-4 ">
+                <table class="table border text-nowrap customize-table mb-0 align-middle">
+                    <thead class="text-dark fs-4">
+                    <tr>
+                        <th><h6 class="fs-4 fw-semibold mb-0">SN</h6></th>
+                        <th><h6 class="fs-4 fw-semibold mb-0">Product Name</h6></th>
+                        <th><h6 class="fs-4 fw-semibold mb-0">Category</h6></th>
+                        <th><h6 class="fs-4 fw-semibold mb-0">View More Details</h6></th>
+                        <th><h6 class="fs-4 fw-semibold mb-0">Preview</h6></th>
+                        <th><h6 class="fs-4 fw-semibold mb-0">Update</h6></th>
+                        <th><h6 class="fs-4 fw-semibold mb-0">Delete</h6></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="product, iStat : ${products}">
+                        <th scope="row" th:text="${iStat.index + 1}">1</th>
+                        <td th:text="${product.name}">Larry</td>
+                        <td>
+                            <div th:if="${product.category != null}">
+                                <p><span th:text="${product.category.name}"></span></p>
+                            </div>
+                        </td>
+<!--                        <td th:text="${product.stockQuantity}">Larry</td>-->
+                        <td>
+                            <a th:href="@{/admin/products/details/{productId}(productId = ${product.id})}">View Details</a>
+                        </td>
+                        <td>
+                            <!-- Loop through and display all images for the product -->
+                            <div th:each="image : ${product.images}">
+                                <img class="img-responsive" src="" height="50px" width="50px" th:src="@{${'static/productImages/' + image.imageName}}">
+                            </div>
+                        </td>
+
+
+                        <td><a href="" th:href="@{/admin/product/update/{id}(id=${product.id})}" class="btn btn-warning">Edit</a></td>
+                        <td><button class="btn btn-danger" data-toggle="modal" th:data-target="'#deleteModal-' + ${product.id}">Delete</button></td>
+
+                    </tr>
+
+                    </tbody>
+                </table>
+                <div th:if="${totalPages > 1}">
+				<div class="row col-sm-10">
+					<div class="fs-4 fw-semibold mb-0">Total Rows: [[${totalItems}]]</div>
+					<div class="col-sm-2">
+						<span th:each="i: ${#numbers.sequence(1, totalPages)}"> <a
+							th:if="${currentPage != i}" th:href="@{'/admin/page/' + ${i}}">[[${i}]]</a>
+							<span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp;
+							&nbsp;
+						</span>
+					</div>
+					<div class="col-sm-1">
+						<a th:if="${currentPage < totalPages}"
+							th:href="@{'/admin/page/' + ${currentPage + 1}}">Next</a> <span
+							th:unless="${currentPage < totalPages}">Next</span>
+					</div>
+
+				</div>
+			</div>
+            </div>
+        </div>
+
+        <!-- Delete Confirmation Modals -->
+        <div th:each="product : ${products}">
+            <div class="modal fade" th:id="'deleteModal-' + ${product.id}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete this product?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <a th:href="@{/admin/product/delete/{id}(id=${product.id})}" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--        Categories Table End        -->
+
+        <div class="py-6 px-6 text-center">
+            <footer th:replace = "fragments :: footer"></footer>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

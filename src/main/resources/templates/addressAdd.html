@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace = "fragments :: html_head"></head>
+
+<body>
+
+<!--Header Starts-->
+<div th:replace = "fragments :: user_header"></div>
+<!--Header Ends-->
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title fw-semibold mb-4">Add New Address</h5>
+            <div class="card">
+                <div class="card-body">
+                    <form th:action="@{/add-address}" th:object="${address}" method="post">
+                        <div class="mb-3">
+                            <label for="country" class="form-label">Country</label>
+                            <select class="form-control" id="country" name="country" th:field="*{country.id}">
+                                <option value="">Select Country</option>
+                                <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.name}"></option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" name="fullName" id="fullName" required th:field="*{fullName}" placeholder="fullName" aria-describedby="textHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="phoneNumber" class="form-label">Phone Number</label>
+                            <input type="text" class="form-control" name="phoneNumber" id="phoneNumber" th:field="*{mobilePhoneNumber}" pattern="[0-9]{10}" title="Mobile phone number must have exactly 10 digits" placeholder="Phone Number" aria-describedby="textHelp" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="pinCode" class="form-label">Pin Code</label>
+                            <input type="text" class="form-control" th:field="*{pinCode}" placeholder="Pin Code" id="pinCode" aria-describedby="textHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="buildingNo" class="form-label">Building No.</label>
+                            <input type="text" class="form-control" th:field="*{buildingNo}" placeholder="Building Number" id="buildingNo" aria-describedby="textHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="street" class="form-label">Street</label>
+                            <input type="text" class="form-control" th:field="*{street}" placeholder="Street" id="street" aria-describedby="textHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="landmark" class="form-label">Landmark</label>
+                            <input type="text" class="form-control" th:field="*{landmark}" placeholder="Landmark" id="landmark" aria-describedby="textHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="city" class="form-label">Town/City</label>
+                            <input type="text" class="form-control" th:field="*{city}" placeholder="Town/City" id="city" aria-describedby="textHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="state" class="form-label">State</label>
+                            <input type="text" class="form-control" th:field="*{state}" placeholder="State" id="state" aria-describedby="textHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="state" class="form-label">Default Address: <input type="checkbox" th:field="*{defaultAddress}" /></label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Address</button>
+                        <br>
+                        <div class="d-flex align-items-center gap-2" th:if="${fromCheckout}">
+                            <a th:href="@{/checkout(fromCheckout=true)}">
+                                <button class="btn btn-secondary fs-2">Back to Checkout</button>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="py-6 px-6 text-center">
+    <footer th:replace = "fragments :: footer"></footer>
+</div>
+</body>
+
+</html>

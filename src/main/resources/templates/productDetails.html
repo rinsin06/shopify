@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace = "fragments :: html_head"></head>
+<body>
+<!--Header Starts-->
+
+
+<!--        top banner -->
+<div class="card bg-light-info shadow-none position-relative overflow-hidden ">
+    <div class="card-body px-4 py-3">
+        <div class="row align-items-center">
+            <div class="col-9">
+                <h4 class="fw-semibold mb-8">Product Details</h4>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a class="text-muted " href="./index.html">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item" aria-current="page">Product Details</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="col-3">
+                <div class="text-center mb-n5">
+                    <img src="" th:src="@{/assetsAdmin/images/banner/ChatBc.png}" alt="" class="img-fluid mb-n4">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-8">
+    <div class="card">
+        <div class="card-body p-4">
+            <h5 class="fw-medium mb-3">Product ID</h5>
+            <div class="d-flex align-items-center justify-content-between pb-7">
+                <p th:text="${product.id}" class="mb-0">#123456</p>
+            </div>
+            <h5 class="fw-medium mb-3">Product Name</h5>
+            <div class="d-flex align-items-center justify-content-between pb-7">
+                <p th:text="${product.name}" class="mb-0">#123456</p>
+            </div>
+            <h5 class="fw-medium mb-3">Product Category</h5>
+            <div class="d-flex align-items-center justify-content-between pb-7">
+                <p th:text="${product.category.name}" class="mb-0">#123456</p>
+            </div>
+            <h5 class="fw-medium mb-3">Product Images</h5>
+            <div th:each="image : ${product.images}">
+                <img src="" height="50px" width="50px" th:src="@{${'/productImages/' + image.imageName}}">
+            </div>
+            <h5 class="fw-medium mb-3">Product Price</h5>
+            <div class="d-flex align-items-center justify-content-between pb-7">
+                <p th:text="${product.price}" class="mb-0">#123456</p>
+            </div>
+            <h5 class="fw-medium mb-3">Product Weight</h5>
+            <div class="d-flex align-items-center justify-content-between pb-7">
+                <p th:text="${product.weight}" class="mb-0">#123456</p>
+            </div>
+            <h5 class="fw-medium mb-3">Product Qantity</h5>
+            <div class="d-flex align-items-center justify-content-between pb-7">
+                <p th:text="${product.stockQuantity}" class="mb-0">#123456</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<a class="btn btn-primary" th:href="@{/admin/products}">Back to All Products</a>
+
+<div class="py-6 px-6 text-center">
+    <footer th:replace = "fragments :: footer"></footer>
+</div>
+</body>
+</html>

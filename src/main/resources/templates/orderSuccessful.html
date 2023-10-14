@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace = "fragments :: html_head"></head>
+<body>
+<!--Header Starts-->
+<div th:replace = "fragments :: user_header"></div>
+
+<p>Your order was successfully placed. Thank you for shopping with us!</p>
+
+<!--<p>Your order with ID: <span th:text="${order.id}"></span> has been successfully placed!</p>-->
+<!--<p><strong>Order Date:</strong> <span th:text="${#temporals.format(order.orderDateTime, 'dd-MM-yyyy HH:mm:ss')}"></span></p>-->
+<!--<p><strong>Total Amount:</strong> ₹<span th:text="${order.totalAmount}"></span></p>-->
+<!--<p><strong>Payment Method:</strong> <span th:text="${order.paymentMethod}"></span></p>-->
+           
+<a th:href="@{/orders}" class="btn btn-primary">Track Your Order</a>
+<a th:href="@{/}" class="btn btn-primary">Continue Shopping</a>
+ <div>
+ <input type="hidden" th:name="order" th:value="${order}" />
+            </div>
+<div class="py-6 px-6 text-center">
+    <footer th:replace = "fragments :: footer"></footer>
+</div>
+</body>
+</html>

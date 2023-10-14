@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace = "fragments :: html_head"></head>
+
+<body>
+<!--sidebar-->
+<!--<div th:replace = "fragments :: user_sidebar"></div>-->
+
+<div class="body-wrapper">
+    <!--Header-->
+    <div th:replace = "fragments :: user_header"></div>
+    <!--Header-->
+    <div class="container-fluid">
+        <div class="shop-detail">
+            <div class="card shadow-none border">
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <div class="row" id="imagePreviews">
+                                    <!-- Iterate over image names and display images -->
+                                    <div th:each="imageName : ${imageNames}" class="thumbnail" th:data-image="${imageName}" onclick="changeMainImage(this)">
+                                        <img class="img-responsive" height="60px" width="60px" th:src="@{'/productImages/' + ${imageName}}" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="main-image">
+                                <!-- Main product image (initially displays the first image) -->
+                                <img class="img-fluid zoom" height="300px" width="300px" th:src="@{'/productImages/' + ${imageNames[0]}}" id="mainImage" alt="">
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-6">
+                            <div class="shop-content">
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <span class="badge text-bg-success fs-2 fw-semibold rounded-3">In Stock</span>
+                                    <span th:text="${product.category.name}" class="fs-2">books</span>
+                                </div>
+                                <h4 th:text="${product.name}" class="fw-semibold">Product name</h4>
+                                <!--                                <p th:text="${product.description}" class="mb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ex arcu, tincidunt bibendum felis.</p>-->
+                                <h4 class="fw-semibold mb-3"><del class="fs-5 text-muted">$350</del> ₹ <span th:text="${product.price}"></span></h4>
+                                <h5>Weight:
+                                    <span th:text="${product.weight}"></span> grams.
+                                </h5>
+                                <div class="d-flex align-items-center gap-8 pb-4 border-bottom">
+                                    <ul class="list-unstyled d-flex align-items-center mb-0">
+                                        <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning fs-4"></i></a></li>
+                                        <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning fs-4"></i></a></li>
+                                        <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning fs-4"></i></a></li>
+                                        <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning fs-4"></i></a></li>
+                                        <li><a class="" href="javascript:void(0)"><i class="ti ti-star text-warning fs-4"></i></a></li>
+                                    </ul>
+                                    <a href="javascript:void(0)">(236 reviews)</a>
+                                </div>
+                                <div class="d-flex align-items-center gap-8 py-7">
+                                    <h6 class="mb-0 fs-4 fw-semibold">Colors:</h6>
+                                    <a class="rounded-circle d-block bg-primary p-6" href="javascript:void(0)"></a>
+                                </div>
+                                <div class="d-flex align-items-center gap-7 pb-7 mb-7 border-bottom">
+                                    <h6 class="mb-0 fs-4 fw-semibold">QTY:</h6>
+                                    <div class="input-group input-group-sm rounded">
+                                        <button class="btn minus min-width-40 py-0 border-end border-secondary fs-5 border-end-0 text-secondary" type="button" id="add1"><i class="ti ti-minus"></i></button>
+                                        <input type="text" class="min-width-40 flex-grow-0 border border-secondary text-secondary fs-4 fw-semibold form-control text-center qty" placeholder="" aria-label="Example text with button addon" aria-describedby="add1" value="1">
+                                        <button class="btn min-width-40 py-0 border border-secondary fs-5 border-start-0 text-secondary add" type="button" id="addo2"><i class="ti ti-plus"></i></button>
+                                    </div>
+                                    <p th:if="${product.stockQuantity < 10}">
+                                        Less stocks buy before it's gone: <br/><span th:text="${product.stockQuantity}"></span> Qty
+                                    </p>
+
+                                </div>
+                                <div class="d-sm-flex align-items-center gap-3 pt-8 mb-7">
+                                    <!-- Buy Now Button -->
+                                    <form th:action="@{/checkoutBuy/{productId}(productId=${product.id})}" method="get">
+                                        <button type="submit" class="btn d-block btn-primary px-5 py-8 mb-2 mb-sm-0">Buy Now</button>
+                                    </form>
+<!--                                    <a th:href="@{/checkout/${product.id}}" class="btn d-block btn-primary px-5 py-8 mb-2 mb-sm-0">Buy Now</a>-->
+
+                                    <!--                                    <a href="" th:href="@{/checkout/{id}(id = ${product.id})}" class="btn d-block btn-primary px-5 py-8 mb-2 mb-sm-0">Buy Now</a>-->
+                                    <a href="" th:href="@{/addToCart/{id}(id = ${product.id})}" class="btn d-block btn-danger px-7 py-8">Add to Cart</a>
+                                    <form th:action="@{/wishlist/add}" method="post">
+                                        <input type="hidden" name="productId" th:value="${product.id}" />
+                                        <button class="btn d-block btn-primary px-0 py-1 mb-2 mb-sm-0" type="submit">Add to Wishlist</button>
+                                    </form>
+
+                                </div>
+                                <p class="mb-0">Dispatch in 2-3 weeks</p>
+                                <a href="javascript:void(0)">Why the longer time for delivery?</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card shadow-none border">
+                <div class="card-body p-4">
+                    <ul class="nav nav-pills user-profile-tab border-bottom" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link position-relative rounded-0 active d-flex align-items-center justify-content-center bg-transparent text-black fs-3 py-6" id="pills-description-tab" data-bs-toggle="pill" data-bs-target="#pills-description" type="button" role="tab" aria-controls="pills-description" aria-selected="true">
+                                Description
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="tab-content pt-4" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-description" role="tabpanel" aria-labelledby="pills-description-tab" tabindex="0">
+                            <h5 class="fs-5 fw-semibold mb-7">
+                                Details
+                            </h5>
+                            <p th:text="${product.description}" class="mb-7">
+                                description detailed. have to replace.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card shadow-none border">
+                <div class="card-body p-4">
+                    <ul class="nav nav-pills user-profile-tab border-bottom" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent text-black fs-3 py-6" id="pills-reviews-tab" data-bs-toggle="pill" data-bs-target="#pills-reviews" type="button" role="tab" aria-controls="pills-reviews" aria-selected="false" tabindex="-1">
+                                Reviews
+                            </button>
+                        </li>
+                    </ul>
+                        <div >
+                            <div class="col">
+                                <div class="row">
+                                    <div class="card shadow-none border w-100 mb-7 mb-lg-0">
+                                        <div class="card-body text-center p-4 d-flex flex-column justify-content-center">
+                                            <h6 class="mb-3">Average Rating</h6>
+                                            <h2 class="text-primary mb-3 fw-semibold fs-9">4/5</h2>
+                                            <ul class="list-unstyled d-flex align-items-center justify-content-center mb-0">
+                                                <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning fs-6"></i></a></li>
+                                                <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning fs-6"></i></a></li>
+                                                <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning fs-6"></i></a></li>
+                                                <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning fs-6"></i></a></li>
+                                                <li><a class="" href="javascript:void(0)"><i class="ti ti-star text-warning fs-6"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="card shadow-none border w-100 mb-7 mb-lg-0">
+                                        <div class="card-body p-4 d-flex flex-column justify-content-center">
+                                            <div class="d-flex align-items-center gap-9 mb-3">
+                                                <span class="flex-shrink-0 fs-2">1 Stars</span>
+                                                <div class="progress bg-light-primary w-100" style="height: 4px;">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 45%;"></div>
+                                                </div>
+                                                <h6 class="mb-0">(485)</h6>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-9 mb-3">
+                                                <span class="flex-shrink-0 fs-2">2 Stars</span>
+                                                <div class="progress bg-light-primary w-100" style="height: 4px;">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                                                </div>
+                                                <h6 class="mb-0">(215)</h6>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-9 mb-3">
+                                                <span class="flex-shrink-0 fs-2">3 Stars</span>
+                                                <div class="progress bg-light-primary w-100" style="height: 4px;">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"></div>
+                                                </div>
+                                                <h6 class="mb-0">(110)</h6>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-9 mb-3">
+                                                <span class="flex-shrink-0 fs-2">4 Stars</span>
+                                                <div class="progress bg-light-primary w-100" style="height: 4px;">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 80%;"></div>
+                                                </div>
+                                                <h6 class="mb-0">(620)</h6>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-9">
+                                                <span class="flex-shrink-0 fs-2">5 Stars</span>
+                                                <div class="progress bg-light-primary w-100" style="height: 4px;">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 12%;"></div>
+                                                </div>
+                                                <h6 class="mb-0">(160)</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="card shadow-none border w-100 mb-7 mb-lg-0">
+                                        <div class="card-body p-4 d-flex flex-column justify-content-center">
+                                            <a th:href="@{/product/addReview/{productId}(productId=${product.id})}"><button type="button" class="btn btn-outline-primary d-flex align-items-center gap-2 mx-auto"><i class="ti ti-pencil fs-7"></i>Write an Review</button></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h5 class="fs-5 fw-semibold mb-7">Customer Reviews</h5>
+                            <div th:if="${reviews}">
+                                <ul>
+                                    <li th:each="review : ${reviews}">
+                                        <span class="fs-4" th:text="${review.user.firstName + ' ' + review.user.lastName}"></span>
+                                        <p class="fs-1">Rating: <span th:text="${review.rating}"></span></p>
+                                        <span class="fs-3" th:text="${review.comments}"></span><br>
+                                        <span class="fs-1" th:text="${review.reviewDate}"></span><br>
+                                        <span class="fs-2" th:text="${review.detailedReview}"></span><br><hr>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--            Related Products        -->
+
+            <!--            <div class="related-products pt-7">-->
+            <!--                <h4 class="mb-3 fw-semibold">Related Products</h4>-->
+            <!--                <div class="row">-->
+            <!--                    <div class="col-sm-6 col-xl-3">-->
+            <!--                        <div class="card hover-img overflow-hidden rounded-2">-->
+            <!--                            <div class="position-relative">-->
+            <!--                                <a href="javascript:void(0)"><img src="../../dist/images/products/s2.jpg" class="card-img-top rounded-0" alt="..."></a>-->
+            <!--                            </div>-->
+            <!--                            <div class="card-body pt-3 p-4">-->
+            <!--                                <h6 class="fw-semibold fs-4">Psalms Book for Growth</h6>-->
+            <!--                                <div class="d-flex align-items-center justify-content-between">-->
+            <!--                                    <h6 class="fw-semibold fs-4 mb-0">$89 <span class="ms-2 fw-normal text-muted fs-3"><del>$99</del></span></h6>-->
+            <!--                                    <ul class="list-unstyled d-flex align-items-center mb-0">-->
+            <!--                                        <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>-->
+            <!--                                        <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>-->
+            <!--                                        <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>-->
+            <!--                                        <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>-->
+            <!--                                        <li><a class="" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>-->
+            <!--                                    </ul>-->
+            <!--                                </div>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--            </div>-->
+        </div>
+    </div>
+</div>
+</div>
+<div class="py-6 px-6 text-center">
+    <footer th:replace = "fragments :: footer"></footer>
+</div>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"
+        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+        crossorigin="anonymous"></script>
+<!--Elevate Zoom-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/2.2.3/jquery.elevatezoom.min.js"></script>
+<script>
+    $(".zoom").elevateZoom();
+</script>
+<script>
+    function changeMainImage(thumbnail) {
+        var mainImage = document.getElementById('mainImage');
+        var imageName = thumbnail.getAttribute('data-image');
+        mainImage.src = '/productImages/' + imageName;
+        // Reinitialize Elevate Zoom on the main image
+        $('.zoom').elevateZoom();
+    }
+</script>
+</body>
+
+</html>

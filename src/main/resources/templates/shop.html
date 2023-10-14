@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace = "fragments :: html_head"></head>
+
+<body>
+
+<div class="body-wrapper">
+    <!--Header-->
+    <div th:replace = "fragments :: user_header"></div>
+    <!--Header-->
+    <div class="container-fluid">
+        <div class="card bg-light-info shadow-none position-relative overflow-hidden">
+            <div class="card-body px-4 py-6">
+                <div class="row align-items-center">
+                    <div class="col-9">
+                        <h4 class="fw-semibold mb-8">Shopify.com</h4>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a class="text-muted text-decoration-none" href="./index.html">Dashboard</a></li>
+                                <li class="breadcrumb-item" aria-current="page">Shop</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="col-3">
+                        <div class="text-center mb-n5">
+                            <img src="../../dist/images/breadcrumb/ChatBc.png" alt="" class="img-fluid mb-n4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card position-relative overflow-hidden">
+            <div class="shop-part d-flex w-100">
+                <div class="shop-filters flex-shrink-0 border-end d-none d-lg-block">
+                    <ul class="list-group pt-2 border-bottom rounded-0">
+                        <h6 class="my-3 mx-4 fw-semibold">Filter by Category</h6>
+                        <a th:href="@{/shop}"><li class="d-flex align-items-center gap-2 list-group-item-action text-dark px-3 py-6 rounded-1">All Products</li></a>
+                        <a  href="" th:each="category, iStat : ${categories}"
+                            th:href="@{/shop/category/{id}(id=${category.id})}">
+                            <li
+                                    class="d-flex align-items-center gap-2 list-group-item-action text-dark px-3 py-6 rounded-1" th:text="${category.name}"></li></a>
+                    </ul>
+                    <ul class="list-group pt-2 border-bottom rounded-0">
+                        <h6 class="my-3 mx-4 fw-semibold">Sort By</h6>
+                        <li class="list-group-item border-0 p-0 mx-4 mb-2">
+                            <a class="d-flex align-items-center gap-2 list-group-item-action text-dark px-3 py-6 rounded-1" href="javascript:void(0)"><i class="ti ti-ad-2 fs-5"></i>Newest
+                            </a>
+                        </li>
+                        <li class="list-group-item border-0 p-0 mx-4 mb-2">
+                            <a class="d-flex align-items-center gap-2 list-group-item-action text-dark px-3 py-6 rounded-1" href="javascript:void(0)"><i class="ti ti-sort-ascending-2 fs-5"></i>Price: High-Low
+                            </a>
+                        </li>
+                        <li class="list-group-item border-0 p-0 mx-4 mb-2">
+                            <a class="d-flex align-items-center gap-2 list-group-item-action text-dark px-3 py-6 rounded-1" href="javascript:void(0)"><i class="ti ti-sort-descending-2 fs-5"></i>Price: Low-High
+                            </a>
+                        </li>
+                        <li class="list-group-item border-0 p-0 mx-4 mb-2">
+                            <a class="d-flex align-items-center gap-2 list-group-item-action text-dark px-3 py-6 rounded-1" href="javascript:void(0)"><i class="ti ti-ad-2 fs-5"></i>Discounted
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="by-gender border-bottom rounded-0">
+                        <h6 class="mt-4 mb-3 mx-4 fw-semibold">By Gender</h6>
+                        <div class="pb-4 px-4">
+                            <div class="form-check fw-normal py-8 d-flex align-items-center gap-2 mb-0">
+                                <input class="form-check-input p-2" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked="">
+                                <label class="form-check-label" for="flexRadioDefault2">All</label>
+                            </div>
+                            <div class="form-check fw-normal py-8 d-flex align-items-center gap-2 mb-0">
+                                <input class="form-check-input p-2" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                                <label class="form-check-label" for="flexRadioDefault2">Men</label>
+                            </div>
+                            <div class="form-check fw-normal py-8 d-flex align-items-center gap-2 mb-0">
+                                <input class="form-check-input p-2" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                                <label class="form-check-label" for="flexRadioDefault2">Women</label>
+                            </div>
+                            <div class="form-check fw-normal py-8 d-flex align-items-center gap-2 mb-0">
+                                <input class="form-check-input p-2" type="radio" name="flexRadioDefault" id="flexRadioDefault4">
+                                <label class="form-check-label" for="flexRadioDefault2">Kids</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="by-pricing border-bottom rounded-0">
+                        <h6 class="mt-4 mb-3 mx-4 fw-semibold">By Pricing</h6>
+                        <div class="pb-4 px-4">
+                            <div class="form-check fw-normal py-8 d-flex align-items-center gap-2 mb-0">
+                                <input class="form-check-input p-2" type="radio" name="flexRadioDefault" id="flexRadioDefault5" checked="">
+                                <label class="form-check-label" for="flexRadioDefault2">All</label>
+                            </div>
+                            <div class="form-check fw-normal py-8 d-flex align-items-center gap-2 mb-0">
+                                <input class="form-check-input p-2" type="radio" name="flexRadioDefault" id="flexRadioDefault6">
+                                <label class="form-check-label" for="flexRadioDefault2">0-50</label>
+                            </div>
+                            <div class="form-check fw-normal py-8 d-flex align-items-center gap-2 mb-0">
+                                <input class="form-check-input p-2" type="radio" name="flexRadioDefault" id="flexRadioDefault7">
+                                <label class="form-check-label" for="flexRadioDefault2">50-100</label>
+                            </div>
+                            <div class="form-check fw-normal py-8 d-flex align-items-center gap-2 mb-0">
+                                <input class="form-check-input p-2" type="radio" name="flexRadioDefault" id="flexRadioDefault8">
+                                <label class="form-check-label" for="flexRadioDefault2">100-200</label>
+                            </div>
+                            <div class="form-check fw-normal py-8 d-flex align-items-center gap-2 mb-0">
+                                <input class="form-check-input p-2" type="radio" name="flexRadioDefault" id="flexRadioDefault9">
+                                <label class="form-check-label" for="flexRadioDefault2">Over 200</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="by-colors border-bottom rounded-0">
+                        <h6 class="mt-4 mb-3 mx-4 fw-semibold">By Colors</h6>
+                        <div class="pb-4 px-4">
+                            <ul class="list-unstyled d-flex flex-wrap align-items-center gap-2 mb-0">
+                                <li class="shop-color-list"><a class="shop-colors-item rounded-circle d-block shop-colors-1" href="javascript:void(0)"></a></li>
+                                <li class="shop-color-list"><a class="shop-colors-item rounded-circle d-block shop-colors-2" href="javascript:void(0)"></a></li>
+                                <li class="shop-color-list"><a class="shop-colors-item rounded-circle d-block shop-colors-3" href="javascript:void(0)"></a></li>
+                                <li class="shop-color-list"><a class="shop-colors-item rounded-circle d-block shop-colors-4" href="javascript:void(0)"></a></li>
+                                <li class="shop-color-list"><a class="shop-colors-item rounded-circle d-block shop-colors-5" href="javascript:void(0)"></a></li>
+                                <li class="shop-color-list"><a class="shop-colors-item rounded-circle d-block shop-colors-6" href="javascript:void(0)"></a></li>
+                                <li class="shop-color-list"><a class="shop-colors-item rounded-circle d-block shop-colors-7" href="javascript:void(0)"></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <a href="javascript:void(0)" class="btn btn-warning w-100">Reset Filters</a>
+                    </div>
+                </div>
+                <div class="card-body p-4 pb-0">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="fs-5 fw-semibold mb-0">Products</h5>
+                    </div>
+                    <div class="row">
+                        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-4 d-flex justify-content-evenly grid gap-3">
+                            <div class="card hover-img overflow-hidden rounded-2" th:each="product : ${products}">
+                                <div class="position-relative">
+                                    <a th:href="@{/shop/viewproduct/{id}(id=${product.id})}"><img th:if="${not #lists.isEmpty(product.images)}" th:src="@{${'/productImages/' + product.images[0].imageName}}" th:alt="${product.name}" class="card-img-top rounded-0" alt="..."></a>
+                                    <a href="" th:href="@{/addToCart/{id}(id = ${product.id})}" class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"><i class="ti ti-shopping-cart fs-4"></i></a>                      </div>
+                                <div class="card-body pt-2 p-3">
+                                    <a class="text-decoration-none text-black" th:href="@{/shop/viewproduct/{id}(id=${product.id})}"><h6 class="fw-semibold fs-4" th:text="${product.name}">Card title</h6></a>
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <h6 class="fw-semibold fs-3 mb-0">₹ <span th:text="${product.price}"></span> <span class="ms-2 fw-normal text-muted fs-2"><del>₹345</del></span></h6>
+                                        <ul class="list-unstyled d-flex align-items-center mb-0">
+                                            <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
+                                            <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
+                                            <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
+                                            <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
+                                            <li><a class="" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="py-6 px-6 text-center">
+    <footer th:replace = "fragments :: footer"></footer>
+</div>
+</body>
+
+</html>

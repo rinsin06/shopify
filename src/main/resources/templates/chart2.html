@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+   <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" th:href="@{/assetsAdmin/images/logos/favicon.png}" />
+    <link rel="stylesheet" th:href="@{/assetsAdmin/css/styles.min.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/2.2.3/jquery.elevatezoom.min.css">
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body><!--  Body Wrapper -->
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <!-- Sidebar Start -->
+    <div th:replace = "fragments :: admin_sidebar"></div>
+    <!--  Sidebar End -->
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+        <!--  Header Start -->
+        <header th:replace = "fragments :: admin_MainNav"></header>
+        <!--  Header End -->
+        <div class="container-fluid">
+                   <div class="card bg-light-info shadow-none position-relative overflow-hidden ">
+                <div class="card-body px-4 py-3">
+                    <div class="row align-items-center">
+                        <div class="col-9">
+                            <h4 class="fw-semibold mb-8">Earnings Chart</h4>
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item">
+                                        <a class="text-muted " href="/admin">Dashboard</a>
+                                    </li>
+                                    <li class="breadcrumb-item" aria-current="page">Coupon Management</li>
+                                </ol>
+                            </nav>
+                        </div>
+                        <div class="col-3">
+                            <div class="text-center mb-n5">
+                                <img src="" th:src="@{/assetsAdmin/images/banner/ChatBc.png}" alt="" class="img-fluid mb-n4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <div style="width: 80%; margin: 0 auto;">
+    <div style = "text-align: center;">
+        <a href="/admin/chart"><button class="btn btn-success">Monthly Chart</button></a>
+        <a href="/admin/chart2"><button class="btn btn-success">Yearly Chart</button></a>
+    </div>
+        <canvas id="myChart" width="400" height="200"></canvas>
+    </div>
+ <div id="myData" th:attr="data-my-value=${chartLabels}"></div>
+ 
+    <script>
+        // Sample data and labels
+        // var yearlyChartData = [[${yearlyChartData}]];
+       var chartData = [[${chartData}]];
+      // var chartLabels = [['$chartLabels']];
+		 var chartLabels = JSON.parse(document.getElementById('myData').getAttribute('data-my-value')); 
+        // Get canvas element
+        var ctx = document.getElementById('myChart').getContext('2d');
+        //chartLabels = chartLabels.replace(/'/g, '"');
+
+        // Create chart
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels:chartLabels,
+                datasets: [{
+                	label: 'Yearly Earnings(₹)',
+                    data: chartData,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+    
+    </div>
+    
+    <div class="py-6 px-6 text-center">
+            <footer th:replace = "fragments :: footer"></footer>
+        </div>
+    </div>
+  
+    </div>
+ 
+</body>
+</html>
