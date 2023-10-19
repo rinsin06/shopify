@@ -66,15 +66,14 @@ public class UserRegistration {
 		
 		
 		return "index";
-	}
+	}  
 
 	@PostMapping("/register")
 	public String Register(@ModelAttribute("user") User user, HttpServletRequest request, Model model) throws ServletException {
+		
 		Optional<User> existingUserOptional = userRepository.findByEmail(user.getEmail());
 		boolean userExists;
-		
-		
-			
+
 			userExists = false;
 			
 			 String password = user.getPassword();
@@ -93,6 +92,8 @@ public class UserRegistration {
 	        	user.setActive(true);
 	   		    user.setRoles(Arrays.asList(role));
 	            userRepository.save(user);
+	   		    
+	   		    model.addAttribute("user",user);
 
 	            model.addAttribute("phone_number", user.getPhoneNumber());
 

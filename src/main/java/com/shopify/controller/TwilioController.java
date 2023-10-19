@@ -53,7 +53,7 @@ public class TwilioController {
 	public String verifyotp(@RequestParam(value = "email") String email, @RequestParam(value = "otp") String otp,Model model) {
 	
 		Optional<User> userOptional = repository.findByEmail(email);
-		
+//		
 		 User user = userOptional.get();
 		 
 		String phone_number = user.getPhoneNumber();
@@ -67,6 +67,8 @@ public class TwilioController {
 	
 	    	 
 	    	 user.setOtpVerified(true);
+	    	 
+	    	 
              repository.save(user);
 	    	
 	    	model.addAttribute("success", true);
@@ -75,6 +77,8 @@ public class TwilioController {
 	    	
 	        return "redirect:/";
 	    } else {
+	    	
+	    	
 	    	model.addAttribute("phone_number",phone_number);
 	    	
 	    	model.addAttribute("email",email);
